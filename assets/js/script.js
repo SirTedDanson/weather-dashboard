@@ -1,7 +1,8 @@
 
+
 // get current weather from API ----------------------------------------------------------------------
-var getCurrent = function () {
-  var currentWeather = "http://api.openweathermap.org/data/2.5/weather?q=Columbus&units=imperial&appid=d81dc018285004c32e878ad354aa6463";
+var getCurrent = function (searchedCity) {
+  var currentWeather = "http://api.openweathermap.org/data/2.5/weather?q="+searchedCity+"&units=imperial&appid=d81dc018285004c32e878ad354aa6463";
   fetch(currentWeather).then(function(response) {
     if (response.ok) {
       response.json().then(function(data) {
@@ -31,6 +32,7 @@ var currentWeatherParse = function (currentData) {
 var displayCurrent = function (city, day, icon, temp, wind, humidity, uv) {
   // container element
   var currentWeatherCont = $("#current-weather")
+  var currentWeatherCard = $("<div>").addClass("card").attr("id", "weather-card")
   var currentIcon = $("<img>").attr("src", "http://openweathermap.org/img/wn/" + icon + ".png")
   var currentCity = $("<h2>").addClass("title city-date mb-1").text(city + " (" + day + ") ");
   var currentTemp = $("<p>").addClass("data title is-5 p-2 mb-0").text("Temp: " + temp + " \u00B0F");
@@ -39,12 +41,13 @@ var displayCurrent = function (city, day, icon, temp, wind, humidity, uv) {
   var currentUV = $("<p>").addClass("data title is-5 p-2 mb-0").text(uv);
 
   currentCity.append(currentIcon)
-  currentWeatherCont.append(currentCity, currentTemp, currentWind, currentHumidity, currentUV)
+  currentWeatherCard.append(currentCity, currentTemp, currentWind, currentHumidity, currentUV)
+  currentWeatherCont.append(currentWeatherCard)
 }
 
 // get five day forecast from API -----------------------------------------------------------------
-var getFiveDay = function () {
-  var fiveDayForecast = "http://api.openweathermap.org/data/2.5/forecast?q=Columbus&units=imperial&appid=d81dc018285004c32e878ad354aa6463";
+var getFiveDay = function (searchedCity) {
+  var fiveDayForecast = "http://api.openweathermap.org/data/2.5/forecast?q="+searchedCity+"&units=imperial&appid=d81dc018285004c32e878ad354aa6463";
   fetch(fiveDayForecast).then(function(response) {
     if (response.ok) {
       response.json().then(function(data) {
@@ -57,7 +60,8 @@ var getFiveDay = function () {
   });
 };
 // ---------- PARSE FIVE DAY FORECAST DATA ------------------
-var fiveDayDataParse = function (forecastData) {  
+var fiveDayDataParse = function (forecastData) {
+
   // gather relavent five day forecast data
   for (var i = 0; i < forecastData.list.length; i=i+8) {
     var fiveDayDate = new Date(forecastData.list[i].dt*1000).toLocaleDateString("en-US");
@@ -73,6 +77,8 @@ var fiveDayDataParse = function (forecastData) {
 
 // ===================================== DISPLAY FIVE DAY FORECAST ====================================
 var displayFiveDay = function (date, icon, temp, wind, humidity) {
+
+  
   var fiveDayContainer = $("#five-day");
   // build daily weather data DOM elements
   var dayContainer = $("<div>").addClass("column card").attr("id", "day-container");
@@ -86,6 +92,39 @@ var displayFiveDay = function (date, icon, temp, wind, humidity) {
   fiveDayContainer.append(dayContainer);
 };
 
+$("#search-button").click(function(event){
+  event.preventDefault()
+  console.log("Search button clicked!")
+  var searchedCity = $("#city-search").val()
+  console.log(searchedCity)
+
+  if (searchedCity === "") {
+  console.log("blank input")
+  }
+  else {
+    resetPage ();
+    searchCityWeather (searchedCity);
+  }
+})
+
+var resetPage = function () {
+  
+  var currentCityWeather = document.getElementById("weather-card")
+  if (document.getElementById("day-container")) {
+  for (var i = 0; i < 5; i ++) {
+    var fiveDayForecast = document.getElementById("day-container")
+    fiveDayForecast.remove();
+  }
+  }
+  if (currentCityWeather) {
+    currentCityWeather.remove()
+  }
+}
+
+
 // LAUNCH APPLICATION
-getCurrent ();
-getFiveDay ();
+var searchCityWeather = function (searchedCity) {
+  getCurrent (searchedCity);
+  getFiveDay (searchedCity);
+}
+
