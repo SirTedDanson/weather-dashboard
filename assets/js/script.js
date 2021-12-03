@@ -1,7 +1,7 @@
 
 // get current weather from API ----------------------------------------------------------------------
 var getCurrent = function () {
-  var currentWeather = "http://api.openweathermap.org/data/2.5/weather?q=Columbus&appid=d81dc018285004c32e878ad354aa6463";
+  var currentWeather = "http://api.openweathermap.org/data/2.5/weather?q=Columbus&units=imperial&appid=d81dc018285004c32e878ad354aa6463";
   fetch(currentWeather).then(function(response) {
     if (response.ok) {
       response.json().then(function(data) {
@@ -44,7 +44,7 @@ var displayCurrent = function (city, day, icon, temp, wind, humidity, uv) {
 
 // get five day forecast from API -----------------------------------------------------------------
 var getFiveDay = function () {
-  var fiveDayForecast = "http://api.openweathermap.org/data/2.5/forecast?q=Columbus&appid=d81dc018285004c32e878ad354aa6463";
+  var fiveDayForecast = "http://api.openweathermap.org/data/2.5/forecast?q=Columbus&units=imperial&appid=d81dc018285004c32e878ad354aa6463";
   fetch(fiveDayForecast).then(function(response) {
     if (response.ok) {
       response.json().then(function(data) {
