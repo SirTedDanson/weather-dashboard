@@ -1,4 +1,22 @@
+// LAUNCH APPLICATION
+var searchCityWeather = function (searchedCity) {
+  getCurrent (searchedCity);
+  getFiveDay (searchedCity);
+}
 
+var resetPage = function () {
+  
+  var currentCityWeather = document.getElementById("weather-card")
+  if (document.getElementById("day-container")) {
+  for (var i = 0; i < 5; i ++) {
+    var fiveDayForecast = document.getElementById("day-container")
+    fiveDayForecast.remove();
+  }
+  }
+  if (currentCityWeather) {
+    currentCityWeather.remove()
+  }
+}
 
 // get current weather from API ----------------------------------------------------------------------
 var getCurrent = function (searchedCity) {
@@ -32,14 +50,13 @@ var currentWeatherParse = function (currentData) {
 var displayCurrent = function (city, day, icon, temp, wind, humidity, uv) {
   // container element
   var currentWeatherCont = $("#current-weather")
-  var currentWeatherCard = $("<div>").addClass("card").attr("id", "weather-card")
+  var currentWeatherCard = $("<div>").addClass("").attr("id", "weather-card")
   var currentIcon = $("<img>").attr("src", "http://openweathermap.org/img/wn/" + icon + ".png")
   var currentCity = $("<h2>").addClass("title city-date mb-1").text(city + " (" + day + ") ");
   var currentTemp = $("<p>").addClass("data title is-5 p-2 mb-0").text("Temp: " + temp + " \u00B0F");
   var currentWind = $("<p>").addClass("data title is-5 p-2 mb-0").text("Wind: " + wind + " MPH");
   var currentHumidity = $("<p>").addClass("data title is-5 p-2 mb-0").text("Humidity: " + humidity + " %");
   var currentUV = $("<p>").addClass("data title is-5 p-2 mb-0").text(uv);
-
   currentCity.append(currentIcon)
   currentWeatherCard.append(currentCity, currentTemp, currentWind, currentHumidity, currentUV)
   currentWeatherCont.append(currentWeatherCard)
@@ -77,7 +94,6 @@ var fiveDayDataParse = function (forecastData) {
 
 // ===================================== DISPLAY FIVE DAY FORECAST ====================================
 var displayFiveDay = function (date, icon, temp, wind, humidity) {
-
   
   var fiveDayContainer = $("#five-day");
   // build daily weather data DOM elements
@@ -92,7 +108,29 @@ var displayFiveDay = function (date, icon, temp, wind, humidity) {
   fiveDayContainer.append(dayContainer);
 };
 
+var cityHist = function (searchedCity) {
+  var searchForm = $("#search-form")
+  var buttonContainer = $("<div>").addClass("control my-4")
+  var cityHistButton = $("<button>")
+    .addClass("button prev-city is-success is-outlined")
+    .attr("type", "submit")
+    .text(searchedCity)
+  buttonContainer.append(cityHistButton)
+  searchForm.append(buttonContainer); 
+
+  var prevCityBtn = document.querySelectorAll('.prev-city');
+  for (let i = 0; i < prevCityBtn.length; i++) {
+    prevCityBtn[i].onclick = function(e) {
+      e.preventDefault()
+      var prevSearchCity = $(this).text()
+      resetPage ();
+      searchCityWeather(prevSearchCity);
+    }
+  }
+}
+
 $("#search-button").click(function(event){
+ 
   event.preventDefault()
   console.log("Search button clicked!")
   var searchedCity = $("#city-search").val()
@@ -104,27 +142,6 @@ $("#search-button").click(function(event){
   else {
     resetPage ();
     searchCityWeather (searchedCity);
+    cityHist (searchedCity);
   }
 })
-
-var resetPage = function () {
-  
-  var currentCityWeather = document.getElementById("weather-card")
-  if (document.getElementById("day-container")) {
-  for (var i = 0; i < 5; i ++) {
-    var fiveDayForecast = document.getElementById("day-container")
-    fiveDayForecast.remove();
-  }
-  }
-  if (currentCityWeather) {
-    currentCityWeather.remove()
-  }
-}
-
-
-// LAUNCH APPLICATION
-var searchCityWeather = function (searchedCity) {
-  getCurrent (searchedCity);
-  getFiveDay (searchedCity);
-}
-
