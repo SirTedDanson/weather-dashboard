@@ -17,29 +17,29 @@ var getCurrent = function () {
 // ---------- PARSE CURRENT WEATHER DATA ------------------
 var currentWeatherParse = function (currentData) {
   // gather relavent current weather data
-  var currentCity = currentData.name;
-  var currentDay = new Date(currentData.dt*1000).toLocaleDateString("en-US");
-  var currentIcon = currentData.weather[0].icon;
-  var currentTemp = currentData.main.temp;
-  var currentWind = currentData.wind.speed;
-  var currentHumidity = currentData.main.humidity;
-  var currentUV = currentData.main.temp;
-  displayCurrent (currentCity, currentDay, currentIcon, currentTemp, currentWind, currentHumidity, currentUV)
+  var currWeathCity = currentData.name;
+  var currWeathDay = new Date(currentData.dt*1000).toLocaleDateString("en-US");
+  var currWeathIcon = currentData.weather[0].icon;
+  var currWeathTemp = currentData.main.temp;
+  var currWeathWind = currentData.wind.speed;
+  var currWeathHumidity = currentData.main.humidity;
+  var currWeathUv = currentData.main.temp;
+  displayCurrent (currWeathCity, currWeathDay, currWeathIcon, currWeathTemp, currWeathWind, currWeathHumidity, currWeathUv)
 };
 
 // ===================================== DISPLAY CURRENT WEATHER ====================================
-var displayCurrent = function (currentCity, currentDay, currentIcon, currentTemp, currentWind, currentHumidity, currentUV) {
+var displayCurrent = function (city, day, icon, temp, wind, humidity, uv) {
   // container element
   var currentWeatherCont = $("#current-weather")
-  var icon = $("<img>").attr("src", "http://openweathermap.org/img/wn/" + currentIcon + ".png")
-  var city = $("<h2>").addClass("title").text(currentCity + " (" + currentDay + ") ");
-  var temp = $("<p>").text(currentTemp);
-  var wind = $("<p>").text(currentWind);
-  var humidity = $("<p>").text(currentHumidity);
-  var uv = $("<p>").text(currentUV);
+  var currentIcon = $("<img>").attr("src", "http://openweathermap.org/img/wn/" + icon + ".png")
+  var currentCity = $("<h2>").addClass("title city-date mb-1").text(city + " (" + day + ") ");
+  var currentTemp = $("<p>").addClass("data title is-5 p-2 mb-0").text("Temp: " + temp + " \u00B0F");
+  var currentWind = $("<p>").addClass("data title is-5 p-2 mb-0").text("Wind: " + wind + " MPH");
+  var currentHumidity = $("<p>").addClass("data title is-5 p-2 mb-0").text("Humidity: " + humidity + " %");
+  var currentUV = $("<p>").addClass("data title is-5 p-2 mb-0").text(uv);
 
-  city.append(icon)
-  currentWeatherCont.append(city, temp, wind, humidity, uv)
+  currentCity.append(currentIcon)
+  currentWeatherCont.append(currentCity, currentTemp, currentWind, currentHumidity, currentUV)
 }
 
 // get five day forecast from API -----------------------------------------------------------------
@@ -49,6 +49,7 @@ var getFiveDay = function () {
     if (response.ok) {
       response.json().then(function(data) {
         fiveDayDataParse (data);
+        console.log(data);
       });
     } else {
       alert("Error: No response from weather API!");
@@ -59,12 +60,11 @@ var getFiveDay = function () {
 var fiveDayDataParse = function (forecastData) {  
   // gather relavent five day forecast data
   for (var i = 0; i < forecastData.list.length; i=i+8) {
-    var fiveDayDate = forecastData.list[i].dt_txt;
+    var fiveDayDate = new Date(forecastData.list[i].dt*1000).toLocaleDateString("en-US");
     var fiveDayTemp = forecastData.list[i].main.temp;
     var fiveDayWind = forecastData.list[i].wind.speed;
     var fiveDayHumidity = forecastData.list[i].main.humidity;
-    var fiveDayicon = forecastData.list[i].weather.icon;
-    console.log(fiveDayDate, fiveDayicon, fiveDayTemp, fiveDayWind, fiveDayHumidity);
+    var fiveDayicon = forecastData.list[i].weather[0].icon;
     
     // display five day forecast on page
     displayFiveDay (fiveDayDate, fiveDayicon, fiveDayTemp, fiveDayWind, fiveDayHumidity);
@@ -75,12 +75,12 @@ var fiveDayDataParse = function (forecastData) {
 var displayFiveDay = function (date, icon, temp, wind, humidity) {
   var fiveDayContainer = $("#five-day");
   // build daily weather data DOM elements
-  var dayContainer = $("<div>").addClass("box column");
-  var dayDate = $("<p>").text(date);
-  var dayIcon = $("<i>").text(icon);
-  var dayTemp = $("<p>").text(temp);
-  var dayWind = $("<p>").text(wind);
-  var dayHumidity = $("<p>").text(humidity);
+  var dayContainer = $("<div>").addClass("column card").attr("id", "day-container");
+  var dayDate = $("<p>").addClass("title is-4 has-text-white mb-1").text(date);
+  var dayIcon  = $("<img>").attr("src", "http://openweathermap.org/img/wn/" + icon + ".png")
+  var dayTemp = $("<p>").addClass("data p-2").text("Temp: " + temp + " \u00B0F");
+  var dayWind = $("<p>").addClass("data p-2").text("Wind: " + wind + " MPH");
+  var dayHumidity = $("<p>").addClass("data p-2").text("Humidity: " + humidity + " %");
   // append to page
   dayContainer.append(dayDate, dayIcon, dayTemp, dayWind, dayHumidity);
   fiveDayContainer.append(dayContainer);

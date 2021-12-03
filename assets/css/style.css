@@ -7,6 +7,14 @@ header {
   padding-bottom: 0;
 }
 
+#current-weather {
+  border: 1px solid black;
+}
+
+.city-date img {
+  vertical-align: text-top;
+}
+
 main form {
   height: 40em;
 }
@@ -15,3 +23,12 @@ button {
   width: 100%;
 }
 
+#day-container {
+  color: white;
+  background-color: #33475a;
+  margin: 10px;
+}
+
+.data {
+  font-weight: 500;
+}
