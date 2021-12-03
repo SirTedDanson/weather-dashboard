@@ -1,0 +1,17 @@
+header {
+  margin-bottom: 2%;
+}
+
+.hero-body {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+main form {
+  height: 40em;
+}
+
+button {
+  width: 100%;
+}
+
