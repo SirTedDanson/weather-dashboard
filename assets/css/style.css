@@ -28,3 +28,23 @@ button {
 .data {
   font-weight: 500;
 }
+
+.uv-low {
+  background-color: #8dc443;
+}
+
+.uv-med {
+  background-color: #fdd835;
+}
+
+.uv-high {
+  background-color: #ffb301;
+}
+
+.uv-vhigh {
+  background-color: #d1394a;
+}
+
+.uv-ehigh {
+  background-color: #954f71;
+}
