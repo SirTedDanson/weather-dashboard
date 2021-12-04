@@ -29,6 +29,10 @@ button {
   font-weight: 500;
 }
 
+.forecast {
+  width: 100%;
+}
+
 .uv-low {
   background-color: #8dc443;
 }

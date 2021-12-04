@@ -1,17 +1,19 @@
 // LAUNCH APPLICATION
+var weatherContainer = $("#weather-info")
+
 var searchCityWeather = function (searchedCity) {
   getGeo(searchedCity);
-  getFiveDay(searchedCity);
+  setTimeout(function() {  
+    getFiveDay(searchedCity); 
+  }, 300);
+ 
 }
 
 var resetPage = function () {
-
-  var currentCityWeather = document.getElementById("weather-card")
-  if (document.getElementById("day-container")) {
-    for (var i = 0; i < 5; i++) {
-      var fiveDayForecast = document.getElementById("day-container")
+  var currentCityWeather = document.getElementById("current-weather")
+  var fiveDayForecast = document.getElementById("forecast-cont")
+  if (document.getElementById("forecast-cont")) {
       fiveDayForecast.remove();
-    }
   }
   if (currentCityWeather) {
     currentCityWeather.remove()
@@ -74,7 +76,9 @@ var currentWeatherParse = function (currentData, searchedCity) {
 // ===================================== DISPLAY CURRENT WEATHER ====================================
 var displayCurrent = function (city, day, icon, temp, wind, humidity, uv) {
   // create elements
-  var currentWeatherCont = $("#current-weather")
+  var currentWeatherCont = $("<div>")
+    .addClass("box has-background-grey-lighter")
+    .attr("id", "current-weather")
   var currentWeatherCard = $("<div>")
     .addClass("")
     .attr("id", "weather-card")
@@ -103,7 +107,9 @@ var displayCurrent = function (city, day, icon, temp, wind, humidity, uv) {
   currentUvContainer.append(currentUvTitle, currentUV)
   currentWeatherCard.append(currentCity, currentTemp, currentWind, currentHumidity, currentUvContainer)
   currentWeatherCont.append(currentWeatherCard)
+  weatherContainer.append(currentWeatherCont)
 
+  // UV index color coding
   if (uv < 3) {
     currentUV.addClass("uv-low")
   }
@@ -138,6 +144,24 @@ var getFiveDay = function (searchedCity) {
 // ---------- PARSE FIVE DAY FORECAST DATA ------------------
 var fiveDayDataParse = function (forecastData) {
 
+  // create container
+  var fiveDayContainer = $("<div>")
+    .addClass("box")
+    .attr("id", "forecast-cont")
+  weatherContainer.append(fiveDayContainer);
+  var forecastTitleCont = $("<div>")
+    .addClass("column is-full pb-4 pl-0")
+  var forecastTitle = $("<h3>")
+    .addClass("title forecast")
+    .text("5-Day Forecast:");
+  var mainForCont = $("<div>")
+    .addClass("columns")
+    .attr("id", "five-day");
+
+  forecastTitleCont.append(forecastTitle)
+  fiveDayContainer.append(forecastTitleCont);
+  fiveDayContainer.append(mainForCont)
+
   // gather relavent five day forecast data
   for (var i = 0; i < forecastData.list.length; i = i + 8) {
     var fiveDayDate = new Date(forecastData.list[i].dt * 1000).toLocaleDateString("en-US");
@@ -154,7 +178,7 @@ var fiveDayDataParse = function (forecastData) {
 // ===================================== DISPLAY FIVE DAY FORECAST ====================================
 var displayFiveDay = function (date, icon, temp, wind, humidity) {
   // create elements
-  var fiveDayContainer = $("#five-day");
+  var forecastContainer = $("#five-day");
   var dayContainer = $("<div>")
     .addClass("column card")
     .attr("id", "day-container");
@@ -172,7 +196,7 @@ var displayFiveDay = function (date, icon, temp, wind, humidity) {
     .text("Humidity: " + humidity + " %");
   // append to page
   dayContainer.append(dayDate, dayIcon, dayTemp, dayWind, dayHumidity);
-  fiveDayContainer.append(dayContainer);
+  forecastContainer.append(dayContainer);
 };
 
 var cityHist = function (searchedCity) {
