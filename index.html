@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -10,38 +11,42 @@
   <link rel="stylesheet" href="./assets/css/style.css">
   <title>Weather Dashboard</title>
 </head>
+
 <body>
-<section class="box hero">
-  <div class="hero-body container">
-    <p class="title is-1">
-      Weather Dashboard
-    </p>
-  </div>
-</section>
-<div class="container">
-  <main class="columns">
-    <div class="column is-one-quarter">
-      <form id="search-form" class="box">
-        <div class="field">
-          <label class="label">Search for a City:</label>
-          <div class="control">
-            <input class="input" type="text" name="city-search" id="city-search" placeholder="Enter a city">
+  <section class="box hero">
+    <div class="hero-body container">
+      <p class="title is-1">
+        Weather Dashboard
+      </p>
+    </div>
+  </section>
+  <div class="container">
+    <main class="columns">
+      <div class="column is-one-quarter">
+        <form id="search-form" class="box">
+          <div class="field">
+            <div id=form-title class="label">
+              <label class="label title is-4">Search for a City:</label>
+            </div>
+            <div class="control">
+              <input class="input" type="text" name="city-search" id="city-search" placeholder="Enter a city">
+            </div>
           </div>
-        </div>
-        <div class="control">
-          <button id="search-button" class="button is-info" type="submit" >Search</button>
-        </div>
-      </form>
-    </div>
-    <!-- cities generated -->
-    <div id="weather-info" class="column">
-      <!-- <div id="current-weather" class="box has-background-grey-lighter"></div> -->
-    </div>
-  </main>
+          <div class="control">
+            <button id="search-button" class="button is-info" type="submit">Search</button>
+          </div>
+        </form>
+      </div>
+      <!-- cities generated -->
+      <div id="weather-info" class="column">
+        <!-- <div id="current-weather" class="box has-background-grey-lighter"></div> -->
+      </div>
+    </main>
 </body>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/jquery-ui-touch-punch@0.2.3/jquery.ui.touch-punch.min.js"></script>
-  <script src="./assets/js/script.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery-ui-touch-punch@0.2.3/jquery.ui.touch-punch.min.js"></script>
+<script src="./assets/js/script.js"></script>
+
 </html>

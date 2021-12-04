@@ -33,6 +33,12 @@ button {
   width: 100%;
 }
 
+form span {
+  font-style: italic;
+  padding-left: 0.5rem;
+  color: grey;
+}
+
 .uv-low {
   background-color: #8dc443;
 }
