@@ -13,45 +13,50 @@
 </head>
 
 <body>
-  <section class="box hero">
+  <header class="box hero">
     <div class="hero-body container box has-background-info-light">
       <p id="dashboard" class="title is-1 py-3 px-0 ">
         Weather Dashboard
       </p>
     </div>
-  </section>
-  <div class="container">
+  </header>
+  <section class="container">
     <main class="columns">
       <div class="column is-one-quarter">
+        <!-- city search form -->
         <form id="search-form" class="box">
           <div class="field">
             <div id=form-title class="label">
               <label class="label title is-4">Search for a City:</label>
             </div>
+            <!-- input -->
             <div class="control">
               <input class="input" type="text" name="city-search" id="city-search" placeholder="Enter a city">
             </div>
           </div>
+          <!-- search button -->
           <div id="search-btn" class="control pb-3">
             <button id="search-button" class="button is-info" type="submit">Search</button>
           </div>
+          <!-- clear history button -->
           <div id="clear-hist" class="control pb-3">
             <button id="clr-hist-btn" class="button is-outlined" type="submit">Clear History</button>
           </div>
         </form>
       </div>
-      <!-- cities generated -->
+      <!-- weather elements generated dynamically-->
       <div id="weather-info" class="column">
+        <!-- welcome message -->
         <div class="box hide" id="current-weather">
           <div>
             <h2 class="title city-date mb-1 has-text-white-ter">
-              Find weather in your area!
+              Find weather & forecast in any city!
             </h2>
           </div>
         </div>
-        <!-- <div id="current-weather" class="box has-background-grey-lighter"></div> -->
       </div>
     </main>
+  </section>
 </body>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
