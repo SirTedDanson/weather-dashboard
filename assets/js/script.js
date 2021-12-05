@@ -15,7 +15,7 @@ var cityFormat = function (searchedCity) {
 //================================= PAGE CREATION ===============================//
 //------------------------------- GEO COORD API CALL -------------------------------//
 var getGeo = function (searchedCity) {
-  var currentWeather = "http://api.openweathermap.org/geo/1.0/direct?q=" + searchedCity + "&limit=1&appid=d81dc018285004c32e878ad354aa6463";
+  var currentWeather = "https://api.openweathermap.org/geo/1.0/direct?q=" + searchedCity + "&limit=1&appid=d81dc018285004c32e878ad354aa6463";
 
   fetch(currentWeather).then(function (response) {
 
