@@ -14,8 +14,8 @@
 
 <body>
   <section class="box hero">
-    <div class="hero-body container">
-      <p class="title is-1">
+    <div class="hero-body container box has-background-info-light">
+      <p class="title is-1 py-3 px-0">
         Weather Dashboard
       </p>
     </div>
@@ -32,8 +32,11 @@
               <input class="input" type="text" name="city-search" id="city-search" placeholder="Enter a city">
             </div>
           </div>
-          <div class="control">
+          <div id="search-btn" class="control pb-3">
             <button id="search-button" class="button is-info" type="submit">Search</button>
+          </div>
+          <div id="clear-hist" class="control pb-3">
+            <button id="clr-hist-btn" class="button is-outlined" type="submit">Clear History</button>
           </div>
         </form>
       </div>

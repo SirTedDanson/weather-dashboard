@@ -1,4 +1,5 @@
 var weatherContainer = $("#weather-info");
+var searchHist = [];
 
 // ------------------------ FORMAT SEARCH CITY TEXT ---------------------------- //
 var cityFormat = function (searchedCity) {
@@ -14,7 +15,6 @@ var cityFormat = function (searchedCity) {
 //================================= PAGE CREATION ===============================//
 //------------------------------- GEO COORD API CALL -------------------------------//
 var getGeo = function (searchedCity) {
-
   var currentWeather = "http://api.openweathermap.org/geo/1.0/direct?q=" + searchedCity + "&limit=1&appid=d81dc018285004c32e878ad354aa6463";
 
   fetch(currentWeather).then(function (response) {
@@ -30,8 +30,9 @@ var getGeo = function (searchedCity) {
             getFiveDay(searchedCity);
           }, 300);
         } else {
+          if (!document.getElementById("spell-err")) {
           var tryAgain = document.createElement("span");
-          $(tryAgain).addClass("subtitle is-6");
+          $(tryAgain).addClass("subtitle is-6").attr("id", "spell-err");
           tryAgain.innerHTML = "Enter a valid city! Check spelling!";
           formText = document.getElementById("form-title");
           // formText.innerHTML = "Search for a city: ";
@@ -39,6 +40,7 @@ var getGeo = function (searchedCity) {
           setTimeout(function () {
             tryAgain.remove();
           }, 1600);
+        }
         }
       });
     }
@@ -55,7 +57,7 @@ var geoDataParse = function (geoData, searchedCity) {
 
 // get current weather from API ----------------------------------------------------------------------
 var getCurrent = function (lon, lat, searchedCity) {
-  var currentWeather = "https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&exclude=hourly,daily&appid=d81dc018285004c32e878ad354aa6463";
+  var currentWeather = "https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&exclude=hourly,daily&units=imperial&appid=d81dc018285004c32e878ad354aa6463";
   fetch(currentWeather).then(function (response) {
     if (response.ok) {
       response.json().then(function (data) {
@@ -86,7 +88,7 @@ var currentWeatherParse = function (currentData, searchedCity) {
 var displayCurrent = function (city, day, icon, temp, wind, humidity, uv) {
   // create elements
   var currentWeatherCont = $("<div>")
-    .addClass("box has-background-grey-lighter")
+    .addClass("box")
     .attr("id", "current-weather");
   var currentWeatherCard = $("<div>")
     .addClass("")
@@ -128,10 +130,12 @@ var displayCurrent = function (city, day, icon, temp, wind, humidity, uv) {
 
 // get five day forecast from API -----------------------------------------------------------------
 var getFiveDay = function (searchedCity) {
+
   var fiveDayForecast = "http://api.openweathermap.org/data/2.5/forecast?q=" + searchedCity + "&units=imperial&appid=d81dc018285004c32e878ad354aa6463";
   fetch(fiveDayForecast).then(function (response) {
     if (response.ok) {
       response.json().then(function (data) {
+        console.log(data);
         fiveDayDataParse(data);
       });
     } else {
@@ -163,12 +167,16 @@ var fiveDayDataParse = function (forecastData) {
 
   // gather relavent five day forecast data
   for (var i = 0; i < forecastData.list.length; i = i + 8) {
-    var fiveDayDate = new Date(forecastData.list[i].dt * 1000).toLocaleDateString("en-US");
+    var fiveDayData = (forecastData.list[i].dt_txt);
+    var fSplitMonth = fiveDayData.substring(5, 7)
+    var fSplitDay = fiveDayData.substring(8, 10)
+    var fSplitYear = fiveDayData.substring(0, 4)
+    var fiveDayDate = fSplitMonth.concat("/", fSplitDay, "/", fSplitYear)
     var fiveDayTemp = forecastData.list[i].main.temp;
     var fiveDayWind = forecastData.list[i].wind.speed;
     var fiveDayHumidity = forecastData.list[i].main.humidity;
     var fiveDayicon = forecastData.list[i].weather[0].icon;
-
+  
     // display five day forecast on page
     displayFiveDay(fiveDayDate, fiveDayicon, fiveDayTemp, fiveDayWind, fiveDayHumidity);
   };
@@ -182,7 +190,7 @@ var displayFiveDay = function (date, icon, temp, wind, humidity) {
     .addClass("column card")
     .attr("id", "day-container");
   var dayDate = $("<p>")
-    .addClass("title is-4 has-text-white mb-1")
+    .addClass("subtitle is-5 has-text-white mb-1")
     .text(date);
   var dayIcon = $("<img>")
     .attr("src", "http://openweathermap.org/img/wn/" + icon + ".png");
@@ -218,7 +226,9 @@ var cityHist = function (searchedCity) {
     .text(searchedCity);
   buttonContainer.append(cityHistButton);
   searchForm.append(buttonContainer);
+  saveToStorage();
 
+  // PREVIOUS CITY SEARCH ---------------------------------------------
   // locate the text of the previous city button and feed it to the API procedure 
   var prevCityBtn = document.querySelectorAll('.prev-city');
   for (let i = 0; i < prevCityBtn.length; i++) {
@@ -243,8 +253,7 @@ var resetPage = function () {
   }
 }
 
-// SEARCH BUTTON LAUNCHES APPLICATION
-// initate weather elements by clicking search button
+// initate weather elements by clicking search button ---------------------- //
 $("#search-button").click(function (event) {
   event.preventDefault();
   var searchedCity = $("#city-search").val();
@@ -254,3 +263,36 @@ $("#search-button").click(function (event) {
     cityFormat(searchedCity);
   };
 });
+
+$("#clr-hist-btn").click(function (event) {
+  event.preventDefault();
+  localStorage.clear()
+  window.location.reload();
+});
+
+// -------------- SAVE SEARCHED DATA TO STORAGE ----------------------- //
+var saveToStorage = function () {
+var curHistBtns = document.querySelectorAll('.prev-city');
+  for (let i = 0; i < curHistBtns.length; i++) {
+    var listedCity = curHistBtns[i].textContent;
+    searchHist[i] = listedCity;
+    localStorage.setItem("Search Hist", JSON.stringify(searchHist));
+  };
+};
+
+// -------------- LOAD DATA TO STORAGE -------------------------- //
+var loadSearchHist = function () {
+  var storedSearchHist = JSON.parse(localStorage.getItem("Search Hist"));
+  if (storedSearchHist == null) {
+    var searchHist = [];
+  } else {
+    searchHist = storedSearchHist;
+    for (let i = 0; i < searchHist.length; i++) {
+      cityHist(searchHist[i]);
+    }
+    getGeo(searchHist[0]);
+  };
+};
+
+// LAUNCH APPLICATION
+loadSearchHist ();

@@ -2,6 +2,11 @@ header {
   margin-bottom: 2%;
 }
 
+.hero {
+  background-image: url("../images/banner.jpg");
+  background-size: cover;
+  background-position: center;
+}
 .hero-body {
   padding-top: 0;
   padding-bottom: 0;
@@ -9,6 +14,7 @@ header {
 
 #current-weather {
   border: 1px solid black;
+  background: #cfcfcf;
 }
 
 .city-date img {
@@ -21,7 +27,7 @@ button {
 
 #day-container {
   color: white;
-  background-color: #33475a;
+  background-color: #1f3d61;
   margin: 10px;
 }
 
@@ -33,11 +39,21 @@ button {
   width: 100%;
 }
 
+#clear-hist {
+  border-bottom: 2px solid rgb(117, 117, 117);
+  border-radius: 1px;
+}
+
+#clr-hist-btn {
+  background-color: rgb(206, 206, 206);
+}
+
 form span {
   font-style: italic;
   padding-left: 0.5rem;
   color: grey;
 }
+
 
 .uv-low {
   background-color: #8dc443;
