@@ -14,7 +14,9 @@ header {
 
 #current-weather {
   border: 1px solid black;
-  background: #cfcfcf;
+  background-color: #cfcfcf;
+  background-image: linear-gradient(to bottom left, #1f3d61, #cfcfcf);
+
 }
 
 .city-date img {
@@ -54,7 +56,6 @@ form span {
   color: grey;
 }
 
-
 .uv-low {
   background-color: #8dc443;
 }
@@ -73,4 +74,14 @@ form span {
 
 .uv-ehigh {
   background-color: #954f71;
+}
+
+.hide {
+  display: none;
+}
+
+@media screen and (max-width: 330px) {
+  #dashboard {
+    font-size: 2rem;
+  }
 }

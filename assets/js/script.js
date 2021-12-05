@@ -25,22 +25,18 @@ var getGeo = function (searchedCity) {
           document.querySelector("input[name='city-search']").value = "";
           resetPage();
           geoDataParse(data, searchedCity);
-          cityHist(searchedCity);
-          setTimeout(function () {
-            getFiveDay(searchedCity);
-          }, 300);
         } else {
           if (!document.getElementById("spell-err")) {
-          var tryAgain = document.createElement("span");
-          $(tryAgain).addClass("subtitle is-6").attr("id", "spell-err");
-          tryAgain.innerHTML = "Enter a valid city! Check spelling!";
-          formText = document.getElementById("form-title");
-          // formText.innerHTML = "Search for a city: ";
-          formText.appendChild(tryAgain);
-          setTimeout(function () {
-            tryAgain.remove();
-          }, 1600);
-        }
+            var tryAgain = document.createElement("span");
+            $(tryAgain).addClass("subtitle is-6").attr("id", "spell-err");
+            tryAgain.innerHTML = "Enter a valid city! Check spelling!";
+            formText = document.getElementById("form-title");
+            // formText.innerHTML = "Search for a city: ";
+            formText.appendChild(tryAgain);
+            setTimeout(function () {
+              tryAgain.remove();
+            }, 1600);
+          }
         }
       });
     }
@@ -62,6 +58,8 @@ var getCurrent = function (lon, lat, searchedCity) {
     if (response.ok) {
       response.json().then(function (data) {
         currentWeatherParse(data, searchedCity);
+        cityHist(searchedCity);
+        getFiveDay(searchedCity);
       });
     } else {
       alert("Error: No response from weather API!");
@@ -96,7 +94,7 @@ var displayCurrent = function (city, day, icon, temp, wind, humidity, uv) {
   var currentIcon = $("<img>")
     .attr("src", "http://openweathermap.org/img/wn/" + icon + ".png");
   var currentCity = $("<h2>")
-    .addClass("title city-date mb-1")
+    .addClass("title city-date mb-1 has-text-info-light")
     .text(city + " (" + day + ") ");
   var currentTemp = $("<p>")
     .addClass("data title is-5 p-2 mb-0").text("Temp: " + temp + " \u00B0F");
@@ -135,7 +133,6 @@ var getFiveDay = function (searchedCity) {
   fetch(fiveDayForecast).then(function (response) {
     if (response.ok) {
       response.json().then(function (data) {
-        console.log(data);
         fiveDayDataParse(data);
       });
     } else {
@@ -170,13 +167,13 @@ var fiveDayDataParse = function (forecastData) {
     var fiveDayData = (forecastData.list[i].dt_txt);
     var fSplitMonth = fiveDayData.substring(5, 7)
     var fSplitDay = fiveDayData.substring(8, 10)
-    var fSplitYear = fiveDayData.substring(0, 4)
-    var fiveDayDate = fSplitMonth.concat("/", fSplitDay, "/", fSplitYear)
+    var fSplitYear = fiveDayData.substring(2, 4)
+    var fiveDayDate = fSplitDay.concat("/", fSplitMonth, "/", fSplitYear)
     var fiveDayTemp = forecastData.list[i].main.temp;
     var fiveDayWind = forecastData.list[i].wind.speed;
     var fiveDayHumidity = forecastData.list[i].main.humidity;
     var fiveDayicon = forecastData.list[i].weather[0].icon;
-  
+
     // display five day forecast on page
     displayFiveDay(fiveDayDate, fiveDayicon, fiveDayTemp, fiveDayWind, fiveDayHumidity);
   };
@@ -272,7 +269,7 @@ $("#clr-hist-btn").click(function (event) {
 
 // -------------- SAVE SEARCHED DATA TO STORAGE ----------------------- //
 var saveToStorage = function () {
-var curHistBtns = document.querySelectorAll('.prev-city');
+  var curHistBtns = document.querySelectorAll('.prev-city');
   for (let i = 0; i < curHistBtns.length; i++) {
     var listedCity = curHistBtns[i].textContent;
     searchHist[i] = listedCity;
@@ -285,6 +282,7 @@ var loadSearchHist = function () {
   var storedSearchHist = JSON.parse(localStorage.getItem("Search Hist"));
   if (storedSearchHist == null) {
     var searchHist = [];
+    document.getElementById("current-weather").classList.remove("hide");
   } else {
     searchHist = storedSearchHist;
     for (let i = 0; i < searchHist.length; i++) {
@@ -295,4 +293,4 @@ var loadSearchHist = function () {
 };
 
 // LAUNCH APPLICATION
-loadSearchHist ();
+loadSearchHist();

@@ -15,7 +15,7 @@
 <body>
   <section class="box hero">
     <div class="hero-body container box has-background-info-light">
-      <p class="title is-1 py-3 px-0">
+      <p id="dashboard" class="title is-1 py-3 px-0 ">
         Weather Dashboard
       </p>
     </div>
@@ -42,6 +42,13 @@
       </div>
       <!-- cities generated -->
       <div id="weather-info" class="column">
+        <div class="box hide" id="current-weather">
+          <div>
+            <h2 class="title city-date mb-1 has-text-white-ter">
+              Find weather in your area!
+            </h2>
+          </div>
+        </div>
         <!-- <div id="current-weather" class="box has-background-grey-lighter"></div> -->
       </div>
     </main>
