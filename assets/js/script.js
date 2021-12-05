@@ -18,7 +18,6 @@ var getGeo = function (searchedCity) {
   var currentWeather = "https://api.openweathermap.org/geo/1.0/direct?q=" + searchedCity + "&limit=1&appid=d81dc018285004c32e878ad354aa6463";
 
   fetch(currentWeather).then(function (response) {
-
     if (response.ok) {
       response.json().then(function (data) {
         if (data.length > 0) {
@@ -26,12 +25,12 @@ var getGeo = function (searchedCity) {
           resetPage();
           geoDataParse(data, searchedCity);
         } else {
+          // reply with spelling error message when no city is found
           if (!document.getElementById("spell-err")) {
             var tryAgain = document.createElement("span");
             $(tryAgain).addClass("subtitle is-6").attr("id", "spell-err");
             tryAgain.innerHTML = "Enter a valid city! Check spelling!";
             formText = document.getElementById("form-title");
-            // formText.innerHTML = "Search for a city: ";
             formText.appendChild(tryAgain);
             setTimeout(function () {
               tryAgain.remove();
@@ -49,7 +48,7 @@ var geoDataParse = function (geoData, searchedCity) {
   var lon = geoData[0].lon;
   var lat = geoData[0].lat;
   getCurrent(lon, lat, searchedCity);
-}
+};
 
 // get current weather from API ----------------------------------------------------------------------
 var getCurrent = function (lon, lat, searchedCity) {
@@ -105,7 +104,7 @@ var displayCurrent = function (city, day, icon, temp, wind, humidity, uv) {
     .addClass("data title is-5 p-2 mb-0")
     .text("Humidity: " + humidity + " %");
   var currentUvContainer = $("<div>")
-    .addClass("data title is-5 py-3 pl-3 mb-0 columns is-mobile");
+    .addClass("data title is-5 py-3 mb-0 columns is-mobile");
   var currentUvTitle = $("<p>")
     .addClass("data title is-5 p-2 mb-0").text("UV Index: ");
   var currentUV = $("<p>")
@@ -144,7 +143,7 @@ var getFiveDay = function (searchedCity) {
 };
 // ---------- PARSE FIVE DAY FORECAST DATA ------------------
 var fiveDayDataParse = function (forecastData) {
-  // create container
+  // create container elements
   var fiveDayContainer = $("<div>")
     .addClass("box")
     .attr("id", "forecast-cont");
@@ -164,11 +163,11 @@ var fiveDayDataParse = function (forecastData) {
 
   // gather relavent five day forecast data
   for (var i = 0; i < forecastData.list.length; i = i + 8) {
-    var fiveDayData = (forecastData.list[i].dt_txt);
-    var fSplitMonth = fiveDayData.substring(5, 7)
-    var fSplitDay = fiveDayData.substring(8, 10)
-    var fSplitYear = fiveDayData.substring(2, 4)
-    var fiveDayDate = fSplitDay.concat("/", fSplitMonth, "/", fSplitYear)
+    var unfDayDate = (forecastData.list[i].dt_txt);
+    var fSplitMonth = unfDayDate.substring(5, 7);
+    var fSplitDay = unfDayDate.substring(8, 10);
+    var fSplitYear = unfDayDate.substring(2, 4);
+    var fiveDayDate = fSplitDay.concat("/", fSplitMonth, "/", fSplitYear);
     var fiveDayTemp = forecastData.list[i].main.temp;
     var fiveDayWind = forecastData.list[i].wind.speed;
     var fiveDayHumidity = forecastData.list[i].main.humidity;
@@ -247,25 +246,8 @@ var resetPage = function () {
   }
   if (currentCityWeather) {
     currentCityWeather.remove();
-  }
-}
-
-// initate weather elements by clicking search button ---------------------- //
-$("#search-button").click(function (event) {
-  event.preventDefault();
-  var searchedCity = $("#city-search").val();
-  // do nothing if search area is empty
-  if (searchedCity === "") {
-  } else {
-    cityFormat(searchedCity);
   };
-});
-
-$("#clr-hist-btn").click(function (event) {
-  event.preventDefault();
-  localStorage.clear()
-  window.location.reload();
-});
+};
 
 // -------------- SAVE SEARCHED DATA TO STORAGE ----------------------- //
 var saveToStorage = function () {
@@ -291,6 +273,23 @@ var loadSearchHist = function () {
     getGeo(searchHist[0]);
   };
 };
+
+// initate weather elements by clicking search button ---------------------- //
+$("#search-button").click(function (event) {
+  event.preventDefault();
+  var searchedCity = $("#city-search").val();
+  // do nothing if search area is empty
+  if (searchedCity === "") {
+  } else {
+    cityFormat(searchedCity);
+  };
+});
+
+$("#clr-hist-btn").click(function (event) {
+  event.preventDefault();
+  localStorage.clear();
+  window.location.reload();
+});
 
 // LAUNCH APPLICATION
 loadSearchHist();

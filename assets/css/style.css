@@ -1,3 +1,5 @@
+/* CUSTOM CSS OVERRIDES */
+/* Hero/Header */
 header {
   margin-bottom: 2%;
 }
@@ -7,15 +9,17 @@ header {
   background-size: cover;
   background-position: center;
 }
+
 .hero-body {
   padding-top: 0;
   padding-bottom: 0;
 }
 
+/* Main weather display */
 #current-weather {
   border: 1px solid black;
   background-color: #cfcfcf;
-  background-image: linear-gradient(to bottom left, #1f3d61, #cfcfcf);
+  background-image: linear-gradient(to bottom left, #426fa5, #cfcfcf);
 
 }
 
@@ -23,13 +27,9 @@ header {
   vertical-align: text-top;
 }
 
-button {
-  width: 100%;
-}
-
 #day-container {
   color: white;
-  background-color: #1f3d61;
+  background-color: #426fa5;
   margin: 10px;
 }
 
@@ -37,7 +37,8 @@ button {
   font-weight: 500;
 }
 
-.forecast {
+/* Search form styling */
+button {
   width: 100%;
 }
 
@@ -50,10 +51,17 @@ button {
   background-color: rgb(206, 206, 206);
 }
 
+/* Spelling error message */
 form span {
   font-style: italic;
   padding-left: 0.5rem;
   color: grey;
+}
+
+/* Utilities */
+.columns {
+  margin-left: 0;
+  margin-right: 0;
 }
 
 .uv-low {
@@ -80,6 +88,7 @@ form span {
   display: none;
 }
 
+/* Small screen header adjustment */
 @media screen and (max-width: 330px) {
   #dashboard {
     font-size: 2rem;
