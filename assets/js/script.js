@@ -15,7 +15,7 @@ var cityFormat = function (searchedCity) {
 //================================= PAGE CREATION ===============================//
 //------------------------------- GEO COORD API CALL -------------------------------//
 var getGeo = function (searchedCity) {
-  var currentWeather = "http://api.openweathermap.org/geo/1.0/direct?q=" + searchedCity + "&limit=1&appid=d81dc018285004c32e878ad354aa6463";
+  var currentWeather = "https://api.openweathermap.org/geo/1.0/direct?q=" + searchedCity + "&limit=1&appid=d81dc018285004c32e878ad354aa6463";
 
   fetch(currentWeather).then(function (response) {
 
@@ -92,7 +92,7 @@ var displayCurrent = function (city, day, icon, temp, wind, humidity, uv) {
     .addClass("")
     .attr("id", "weather-card");
   var currentIcon = $("<img>")
-    .attr("src", "http://openweathermap.org/img/wn/" + icon + ".png");
+    .attr("src", "https://openweathermap.org/img/wn/" + icon + ".png");
   var currentCity = $("<h2>")
     .addClass("title city-date mb-1 has-text-info-light")
     .text(city + " (" + day + ") ");
@@ -129,7 +129,7 @@ var displayCurrent = function (city, day, icon, temp, wind, humidity, uv) {
 // get five day forecast from API -----------------------------------------------------------------
 var getFiveDay = function (searchedCity) {
 
-  var fiveDayForecast = "http://api.openweathermap.org/data/2.5/forecast?q=" + searchedCity + "&units=imperial&appid=d81dc018285004c32e878ad354aa6463";
+  var fiveDayForecast = "https://api.openweathermap.org/data/2.5/forecast?q=" + searchedCity + "&units=imperial&appid=d81dc018285004c32e878ad354aa6463";
   fetch(fiveDayForecast).then(function (response) {
     if (response.ok) {
       response.json().then(function (data) {
@@ -190,7 +190,7 @@ var displayFiveDay = function (date, icon, temp, wind, humidity) {
     .addClass("subtitle is-5 has-text-white mb-1")
     .text(date);
   var dayIcon = $("<img>")
-    .attr("src", "http://openweathermap.org/img/wn/" + icon + ".png");
+    .attr("src", "https://openweathermap.org/img/wn/" + icon + ".png");
   var dayTemp = $("<p>")
     .addClass("data p-2").text("Temp: " + temp + " \u00B0F");
   var dayWind = $("<p>")
